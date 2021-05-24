@@ -1,0 +1,75 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: syslog
+spec:
+  allowedCapabilities:
+    - NET_BIND_SERVICE
+  requiredDropCapabilities: 
+    - AUDIT_WRITE
+    - CHOWN
+    - DAC_OVERRIDE
+    - FOWNER
+    - FSETID
+    - KILL
+    - MKNOD
+    - NET_RAW
+    - SETFCAP
+    - SETGID
+    - SETPCAP
+    - SETUID
+    - SYS_CHROOT
+  volumes:
+    - secret
+  privileged: false
+  allowPrivilegeEscalation: false
+  # Allow core volume types.
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    # Require the container to run without root privileges.
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+  readOnlyRootFilesystem: false
+  seLinux:
+    rule: RunAsAny
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: syslog
+rules:
+- apiGroups: ['policy']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+#  - syslog
+  - vmware-system-privileged
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: syslog
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: syslog
+roleRef:
+  kind: Role
+  name: syslog
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: syslog
+
+
