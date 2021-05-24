@@ -7,7 +7,7 @@ metadata:
     appprotect.f5.com/app-protect-enable: "True"
     appprotect.f5.com/app-protect-security-log-enable: "True"
     appprotect.f5.com/app-protect-security-log: "test/logconf"
-    appprotect.f5.com/app-protect-security-log-destination: "syslog:server=100.70.175.24:514"
+    appprotect.f5.com/app-protect-security-log-destination: "syslog:server=SYSLOG:514"
 spec:
   ingressClassName: nginx # use only with k8s version >= 1.18.0
   tls:
