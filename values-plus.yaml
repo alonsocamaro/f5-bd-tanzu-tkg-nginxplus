@@ -4,6 +4,8 @@ controller:
   image:
     repository: 10.105.210.67/tkg1/nginx-plus-ingress
     tag: "1.11.1"
+  service:
+    externalTrafficPolicy: Cluster
   appprotect:
     ## Enable the App Protect module in the Ingress Controller.
     enable: true
